@@ -5,7 +5,7 @@ from Initialize import *
 
 
 commands_CustomCommands = {
-    "!chat": ('STREAMER', 'customcmds.chat', 'cmdArguments', 'user'),
+    "!chat": ('MOD', 'customcmds.chat', 'cmdArguments', 'user'),
     "!ccexamplemod": ('MOD', 'customcmds.modexample', 'cmdArguments', 'user'),
 }
 
@@ -18,11 +18,14 @@ class CustomCommands:
     def __init__(self):
         self.write("0")
         self.chatters = []
+        self.usersToIgnore = settings["USERS TO IGNORE"].replace(" ", "").split()
+        print(self.usersToIgnore)
 
     def chatMsg(self, user):
         if user not in self.chatters:
-            self.chatters.append(user)
-            self.write(1 + self.read())
+            if user not in self.usersToIgnore:
+                self.chatters.append(user)
+                self.write(1 + self.read())
 
 
     def read(self):

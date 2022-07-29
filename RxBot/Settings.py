@@ -24,7 +24,9 @@ debugMode = (vars(parser.parse_args())["debugMode"])
 
 defaultSettings = [
     ("CHANNEL", "", "Your Twitch username, all lowercase."),
+    ("USERS TO IGNORE", "", "Usernames of chatters to not add to the count. Separate by a comma."),
 ]
+
 
 
 
