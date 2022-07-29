@@ -18,12 +18,12 @@ class CustomCommands:
     def __init__(self):
         self.write("0")
         self.chatters = []
-        self.usersToIgnore = settings["USERS TO IGNORE"].replace(" ", "").split()
+        self.usersToIgnore = settings["USERS TO IGNORE"].replace(" ", "").lower().split()
         print(self.usersToIgnore)
 
     def chatMsg(self, user):
         if user not in self.chatters:
-            if user not in self.usersToIgnore:
+            if user.lower() not in self.usersToIgnore:
                 self.chatters.append(user)
                 self.write(1 + self.read())
 
