@@ -16,15 +16,15 @@ class resources:
 
 class CustomCommands:
     def __init__(self):
-        self.write("0")
-        self.chatters = []
-        self.usersToIgnore = settings["USERS TO IGNORE"].replace(" ", "").lower().split()
-        print(self.usersToIgnore)
+        self.chatters = loadJson()
+        self.usersToIgnore = settings["USERS TO IGNORE"].replace(" ", "").lower().split(",")
+        print("Ignoring users: " + str(self.usersToIgnore))
 
     def chatMsg(self, user):
-        if user not in self.chatters:
+        if user not in self.chatters["CHATTERS"]:
             if user.lower() not in self.usersToIgnore:
-                self.chatters.append(user)
+                print("Adding new unique chatter %s for a total of %s" % (user, str(1 + self.read())))
+                self.chatters["CHATTERS"].append(user)
                 self.write(1 + self.read())
 
 
@@ -38,6 +38,7 @@ class CustomCommands:
         with open("activeChatters.txt", "w") as f:
             f.write(str(number))
             f.close()
+        writeJson(self.chatters)
 
     def chat(self, args, user):
         cmd = args.split()[0].strip()
@@ -75,7 +76,8 @@ class CustomCommands:
 
     def chatreset(self):
         self.write(0)
-        self.chatters = []
+        writeJson({"CHATTERS": []})
+        self.chatters["CHATTERS"] = []
         return "Reset chatters"
 
 

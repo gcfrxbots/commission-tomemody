@@ -1,7 +1,7 @@
 import os
 import time
 import argparse
-
+import json
 try:
     import xlrd
     import xlsxwriter
@@ -24,8 +24,29 @@ debugMode = (vars(parser.parse_args())["debugMode"])
 
 defaultSettings = [
     ("CHANNEL", "", "Your Twitch username, all lowercase."),
-    ("USERS TO IGNORE", "", "Usernames of chatters to not add to the count. Separate by a comma."),
+    ("USERS TO IGNORE", "", "Usernames of chatters to not add to the count. Separate by a comma."),  # TODO FIX
 ]
+
+
+def loadJson():
+    if os.path.exists("data.json"):
+        with open("data.json", "r") as f:
+            jsonData = json.load(f)
+            f.close()
+        return jsonData
+    else:
+        f = open("data.json", "w")
+        data = {"CHATTERS": []}
+        json.dump(data, f)
+        f.close()
+        return {"CHATTERS": []}
+
+
+def writeJson(data):  # Should be only called with a dict from the existing loadJson
+    with open("data.json", "w") as f:
+        json.dump(data, f)
+        f.close()
+    return True
 
 
 
