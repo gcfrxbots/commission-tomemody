@@ -14,7 +14,7 @@ def runcommand(command, cmdArguments, user, mute):
     for item in commands:
         if item == command:
             if commands[item][0] == "MOD":  # MOD ONLY COMMANDS:
-                if user in core.getmoderators() or user == "WildLicorice":
+                if chatConnection.moderator:
                     cmd = commands[item][1]
                     arg1 = commands[item][2]
                     arg2 = commands[item][3]
@@ -50,6 +50,7 @@ class chat:
         self.url = "wss://api.casterlabs.co/v2/koi?client_id=jJu2vQGnHf5U5trv"
         self.puppet = False
         self.active = False
+        self.moderator = False
 
         # Set the normal token
         if os.path.exists("../Config/token.txt"):
@@ -104,7 +105,7 @@ class chat:
         while True:
             result = self.ws.recv()
             resultDict = json.loads(result)
-            #print(resultDict)
+            print(resultDict)
             if debugMode:
                 print(resultDict)
             if "event" in resultDict.keys() and not self.active:
@@ -118,6 +119,7 @@ class chat:
 
             if "event" in resultDict.keys():  # Any actual event is under this
                 eventKeys = resultDict["event"].keys()
+                self.moderator = False
 
                 if "reward" in eventKeys:
                     try:
@@ -147,6 +149,8 @@ class chat:
 
                 if "message" in eventKeys:  # Got chat message, display it then process commands
                     try:
+                        if "MODERATOR" in resultDict["event"]["sender"]["roles"] or "BROADCASTER" in resultDict["event"]["sender"]["roles"]:
+                            self.moderator = True
                         message = resultDict["event"]["message"]
                         user = resultDict["event"]["sender"]["displayname"]
                         command = ((message.split(' ', 1)[0]).lower()).replace("\r", "")
