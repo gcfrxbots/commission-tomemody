@@ -105,7 +105,7 @@ class chat:
         while True:
             result = self.ws.recv()
             resultDict = json.loads(result)
-            print(resultDict)
+            #print(resultDict)
             if debugMode:
                 print(resultDict)
             if "event" in resultDict.keys() and not self.active:
