@@ -141,6 +141,7 @@ class chat:
                         pass
 
                 if "donations" in eventKeys:
+                    if resultDict["event"]["donations"]:
                         bitsAmount = round(resultDict["event"]["donations"][0]["amount"])
                         user = resultDict["event"]["sender"]["displayname"]
                         message = resultDict["event"]["message"]
